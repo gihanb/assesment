@@ -13,20 +13,20 @@ EXISTING_IMAGE=$(docker images -q $IMAGE_NAME)
 
 
 if [[ -z $EXISTING_IMAGE ]]; then
-  echo " '$IMAGE_NAME' {$RED} not found.{$GREEN} Building the image..."
+  echo " '$IMAGE_NAME' {$RED} not found{$RED}.{$GREEN} Building the image...{$GREEN}"
 
   docker build -t $IMAGE_NAME .
 else
-  echo "{$GREEN} Docker image '$IMAGE_NAME' already exists."
+  echo "{$GREEN} Docker image '$IMAGE_NAME' already exists.{$GREEN}"
 
-  read -p "{$GREEN} Do you want to remove the existing image and build a new one? (y/n): " choice
+  read -p " Do you want to remove the existing image and build a new one? (y/n):" choice
 
   if [[ $choice =~ ^[Yy]$ ]]; then
-    echo "{$RED} Removing existing image '$IMAGE_NAME'"
+    echo "{$RED} Removing existing image '$IMAGE_NAME'{$RED}"
     docker rmi $EXISTING_IMAGE
     docker build -t $IMAGE_NAME .
   else
-    echo "{$GREEN}Proceeding with the existing image."
+    echo "{$GREEN}Proceeding with the existing image.{$GREEN}"
   fi
 fi
 
@@ -41,3 +41,12 @@ else
   helm install $HELM_RELEASE_NAME $HELM_CHART_NAME
 fi
 
+# Check application works fine
+
+output=$(curl 127.0.0.1)
+
+if [[ $output == *"hostname"* && $output == *"timestamp"* ]]; then
+    echo "$GREEN Application deployment Success.$GREEN"
+else
+    echo "$RED Application deployment failed.$RED"
+fi

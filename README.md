@@ -37,6 +37,19 @@ assesment % ./setup_test.sh
 
 When you run the script, it will create a Docker image and deploy it to Kubernetes. The script will show the hostname and timestamp in the output. If everything goes well, that's the usual process.
 
+Please be noted that: The script was only tested on a Mac m1 machine.
+
+Included a few additional features on the bash script, in case you required to run this setup a few more times.
+
+<h4> Features </h4>
+
+ <ol>
+  <li> Check docker image already exists if not script will build it </li>
+  <li> Check if the Helm chart is installed. If it is not installed, we proceed with the installation. However, if the chart is already installed, we perform an upgrade to the existing chart. </li>
+  <li> Check application works fine and verify that the output contains the expected output </li>
+</ol>
+
+
 <h3> File strutucure </h3>
 
 In the root directory, you will find two files: the application code sampleapp.py and the Dockerfile.
@@ -44,7 +57,7 @@ In the root directory, you will find two files: the application code sampleapp.p
 Kubernetes objects are located in the `flask-app` folder and are written as helm charts. The template files are in the `templates` folder, and you can make modifications using the values file inside the `flask-app` folder.
 
 
-<h3> What if I want run manually ? </h3>
+<h3> What if I want to run manually ? </h3>
 
 Let's say you require to run this manually.
 
